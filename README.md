@@ -10,6 +10,8 @@
 
 ## Запуск
 
+Готовый `.app` для **Apple Silicon (arm64)**: [скачать из Releases](https://github.com/rkislov/macgcleaner/releases/latest). Распакуйте ZIP и перенесите приложение в «Программы». Сборка подписана локально, без нотариализации Apple.
+
 Готовое приложение после сборки: `build/MacGCleaner.app`.
 
 ```sh

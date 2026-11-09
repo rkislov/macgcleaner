@@ -8,8 +8,9 @@ try FileManager.default.createDirectory(at: directory, withIntermediateDirectori
 for base in [16, 32, 128, 256, 512] {
     for scale in [1, 2] {
         let pixels = base * scale
-        let image = NSImage(size: NSSize(width: pixels, height: pixels))
-        image.lockFocus()
+        let bitmap = NSBitmapImageRep(bitmapDataPlanes: nil, pixelsWide: pixels, pixelsHigh: pixels, bitsPerSample: 8, samplesPerPixel: 4, hasAlpha: true, isPlanar: false, colorSpaceName: .deviceRGB, bytesPerRow: 0, bitsPerPixel: 0)!
+        NSGraphicsContext.saveGraphicsState()
+        NSGraphicsContext.current = NSGraphicsContext(bitmapImageRep: bitmap)
         let factor = CGFloat(pixels) / 1024
         let context = NSGraphicsContext.current!.cgContext
         context.scaleBy(x: factor, y: factor)
@@ -35,8 +36,7 @@ for base in [16, 32, 128, 256, 512] {
         sparkle.close()
         NSColor(srgbRed: 0.98, green: 0.85, blue: 0.45, alpha: 1).setFill()
         sparkle.fill()
-        image.unlockFocus()
-        let bitmap = NSBitmapImageRep(data: image.tiffRepresentation!)!
+        NSGraphicsContext.restoreGraphicsState()
         let name = "icon_\(base)x\(base)\(scale == 2 ? "@2x" : "").png"
         try bitmap.representation(using: .png, properties: [:])!.write(to: directory.appendingPathComponent(name))
     }
